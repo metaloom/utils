@@ -2,7 +2,10 @@ package io.metaloom.utils;
 
 import java.math.BigInteger;
 
-public class ConvertUtils {
+public final class ConvertUtils {
+
+	private ConvertUtils() {
+	}
 
 	public static final long ONE_KB = 1024;
 
