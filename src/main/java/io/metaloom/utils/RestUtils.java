@@ -7,7 +7,7 @@ public final class RestUtils {
 
 	/**
 	 * Decode the URL path segment. This uses {@link URLDecoder#decode(String, String)} to decode the string, because the above method
-	 * {@link #encodeSegment(String)} does not have its own corresponding decode method.
+	 * encodeSegment(String) does not have its own corresponding decode method.
 	 *
 	 * When decoding in this way, "+" in the segment are replaced correctly. A special implementation is necessary because of this bug:
 	 * https://bugs.openjdk.java.net/browse/JDK-8179507
