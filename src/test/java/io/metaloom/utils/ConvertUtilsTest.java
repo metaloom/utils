@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.metaloom.utils.ConvertUtils;
-
 public class ConvertUtilsTest {
 
 	@Test
