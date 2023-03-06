@@ -1,6 +1,7 @@
 package io.metaloom.utils;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 public final class ConvertUtils {
 
@@ -47,6 +48,32 @@ public final class ConvertUtils {
 			double min = (double) ms / 1000 / 60;
 			return String.format("%.1f", min) + " min";
 		}
+	}
+
+	public static double[] convertFloatsToDoubles(float[] input) {
+		if (input == null) {
+			return null; // Or throw an exception - your choice
+		}
+		double[] output = new double[input.length];
+		for (int i = 0; i < input.length; i++) {
+			output[i] = input[i];
+		}
+		return output;
+	}
+
+	public static float[] bytesToFloats(byte[] bytes) {
+		if (bytes.length % Float.BYTES != 0) {
+			throw new RuntimeException("Illegal length");
+		}
+		float floats[] = new float[bytes.length / Float.BYTES];
+		ByteBuffer.wrap(bytes).asFloatBuffer().get(floats);
+		return floats;
+	}
+
+	public static byte[] floatsToBytes(float[] floats) {
+		byte bytes[] = new byte[Float.BYTES * floats.length];
+		ByteBuffer.wrap(bytes).asFloatBuffer().put(floats);
+		return bytes;
 	}
 
 }

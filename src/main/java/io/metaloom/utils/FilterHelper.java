@@ -18,6 +18,10 @@ public final class FilterHelper {
 		return Arrays.asList("wav", "mp3", "oga", "flac");
 	}
 
+	public static List<String> getImageExtensions() {
+		return Arrays.asList("jpg", "jpeg", "bmp", "tga", "gif", "webp", "png", "raw", "arw");
+	}
+
 	public static boolean isDirectory(Path path, LinkOption... options) {
 		return path.toFile().isDirectory();
 	}
@@ -32,6 +36,11 @@ public final class FilterHelper {
 		return false;
 	}
 
+	public static boolean isVideo(Path path, LinkOption... options) {
+		String name = path.toFile().getName().trim().toLowerCase();
+		return isVideo(name, options);
+	}
+
 	public static boolean isAudio(String name, LinkOption... options) {
 		name = name.toLowerCase();
 		for (String ext : FilterHelper.getAudioExtensions()) {
@@ -42,14 +51,34 @@ public final class FilterHelper {
 		return false;
 	}
 
+	public static boolean isAudio(Path path, LinkOption... options) {
+		String name = path.toFile().getName().trim().toLowerCase();
+		return isAudio(name, options);
+	}
+
 	public static boolean isMP4(Path path, LinkOption... options) {
 		String name = path.toFile().getName().trim().toLowerCase();
 		return name.endsWith(".mp4");
 	}
 
-	public static boolean isVideo(Path path, LinkOption... options) {
+	public static boolean isJPG(Path path, LinkOption... options) {
 		String name = path.toFile().getName().trim().toLowerCase();
-		return isVideo(name, options);
+		return name.endsWith(".jpg") || name.endsWith("jpeg");
+	}
+
+	public static boolean isImage(String name, LinkOption... options) {
+		name = name.toLowerCase();
+		for (String ext : FilterHelper.getImageExtensions()) {
+			if (name.endsWith("." + ext)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isImage(Path path, LinkOption... options) {
+		String name = path.toFile().getName().trim().toLowerCase();
+		return isImage(name, options);
 	}
 
 	public static boolean notEmpty(Path path, LinkOption... options) {
