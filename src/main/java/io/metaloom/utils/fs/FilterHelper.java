@@ -1,4 +1,4 @@
-package io.metaloom.utils;
+package io.metaloom.utils.fs;
 
 import java.nio.file.LinkOption;
 import java.nio.file.Path;

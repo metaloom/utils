@@ -1,54 +1,67 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.metaloom.utils</groupId>
-	<artifactId>utils</artifactId>
-	<version>0.3.0-SNAPSHOT</version>
+  <groupId>io.metaloom.utils</groupId>
+  <artifactId>utils</artifactId>
+  <version>0.3.0-SNAPSHOT</version>
 
-	<parent>
-		<groupId>io.metaloom</groupId>
-		<artifactId>maven-parent</artifactId>
-		<version>2.0.1</version>
-	</parent>
+  <parent>
+    <groupId>io.metaloom</groupId>
+    <artifactId>maven-parent</artifactId>
+    <version>2.0.3-SNAPSHOT</version>
+  </parent>
 
-	<name>utils</name>
-	<url>https://github.com/metaloom/utils</url>
-	<description>Collection of common utilities</description>
-	<inceptionYear>2022</inceptionYear>
+  <name>utils</name>
+  <url>https://github.com/metaloom/utils</url>
+  <description>Collection of common utilities</description>
+  <inceptionYear>2022</inceptionYear>
 
-	<scm>
-		<connection>scm:git:git@github.com:metaloom/utils.git</connection>
-		<developerConnection>scm:git:git@github.com:metaloom/utils.git</developerConnection>
-		<url>https://github.com/metaloom/utils</url>
-		<tag>HEAD</tag>
-	</scm>
+  <scm>
+    <connection>scm:git:git@github.com:metaloom/utils.git</connection>
+    <developerConnection>scm:git:git@github.com:metaloom/utils.git</developerConnection>
+    <url>https://github.com/metaloom/utils</url>
+    <tag>HEAD</tag>
+  </scm>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.github.repository>metaloom/utils</project.github.repository>
-	</properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.github.repository>metaloom/utils</project.github.repository>
+  </properties>
 
-	<dependencies>
-		<!-- Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
+    </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<release>17</release>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <!-- Test -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <release>19</release>
+          <compilerArgs>
+            --enable-preview
+          </compilerArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
