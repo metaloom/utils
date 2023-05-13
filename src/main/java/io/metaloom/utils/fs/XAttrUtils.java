@@ -43,6 +43,7 @@ public final class XAttrUtils {
 			}
 			ByteBuffer buffer = ByteBuffer.allocate(size);
 			userDefinedFAView.read(key, buffer);
+			buffer.position(0);
 			return ByteBufferUtils.convertFromByteBuffer(buffer, classOfT);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not read property " + key, e);
@@ -58,10 +59,6 @@ public final class XAttrUtils {
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to write attr {" + key + "} to file {" + path + "}", e);
 		}
-	}
-
-	public static void writeAttr(Path path, String key, Long value) {
-		writeAttr(path, key, String.valueOf(value));
 	}
 
 	public static List<String> listAttr(Path path) {

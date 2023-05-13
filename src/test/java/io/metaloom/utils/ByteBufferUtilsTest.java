@@ -26,7 +26,9 @@ public class ByteBufferUtilsTest {
 	@Test
 	public void testLong() {
 		ByteBuffer buffer = ByteBufferUtils.convertToByteBuffer(42L);
-		Long value = ByteBufferUtils.convertFromByteBuffer(buffer, Long.class);
+		byte[] data = buffer.array();
+		ByteBuffer fromData = ByteBuffer.wrap(data);
+		Long value = ByteBufferUtils.convertFromByteBuffer(fromData, Long.class);
 		assertEquals(42L, value.longValue());
 	}
 
@@ -35,6 +37,13 @@ public class ByteBufferUtilsTest {
 		ByteBuffer buffer = ByteBufferUtils.convertToByteBuffer(4.2d);
 		Double value = ByteBufferUtils.convertFromByteBuffer(buffer, Double.class);
 		assertEquals(4.2d, value.doubleValue(), 0d);
+	}
+
+	@Test
+	public void testBoolean() {
+		ByteBuffer buffer = ByteBufferUtils.convertToByteBuffer(true);
+		Boolean value = ByteBufferUtils.convertFromByteBuffer(buffer, Boolean.class);
+		assertEquals(true, value);
 	}
 
 	@Test

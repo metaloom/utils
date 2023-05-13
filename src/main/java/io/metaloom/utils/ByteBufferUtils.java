@@ -16,7 +16,8 @@ public final class ByteBufferUtils {
 	 */
 	public static ByteBuffer convertToByteBuffer(Object value) {
 		ByteBuffer buffer = switch (value) {
-		case ByteBuffer b -> b;
+		case ByteBuffer bb -> bb;
+		case Boolean b -> ByteBuffer.allocate(Integer.BYTES).putInt(b ? 1 : 0);
 		case Character c -> ByteBuffer.allocate(Character.BYTES).putChar(c);
 		case Integer i -> ByteBuffer.allocate(Integer.BYTES).putInt(i);
 		case Long l -> ByteBuffer.allocate(Long.BYTES).putLong(l);
@@ -50,6 +51,8 @@ public final class ByteBufferUtils {
 			return classOfT.cast(Float.valueOf(buffer.getFloat()));
 		} else if (classOfT.isAssignableFrom(Integer.class)) {
 			return classOfT.cast(Integer.valueOf(buffer.getInt()));
+		} else if (classOfT.isAssignableFrom(Boolean.class)) {
+			return classOfT.cast(Boolean.valueOf(buffer.getInt() == 0 ? false : true));
 		} else {
 			throw new RuntimeException("Invalid type");
 		}
