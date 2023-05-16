@@ -2,23 +2,31 @@ package io.metaloom.utils;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class ConvertUtils {
+
+	private static Pattern FIRST_INT_NUMBER_PATTERN = Pattern.compile("(\\d+)\\s*(.*)");
 
 	private ConvertUtils() {
 	}
 
-	public static final long ONE_KB = 1024;
+	public static final long ONE_KB = 1024L;
 
 	public static final BigInteger ONE_KB_BI = BigInteger.valueOf(ONE_KB);
 
-	public static final long ONE_MB = 1024 * 1024;
+	public static final long ONE_MB = 1024L * 1024;
 
 	public static final BigInteger ONE_MB_BI = BigInteger.valueOf(ONE_MB);
 
-	public static final long ONE_GB = 1024 * 1024 * 1024;
+	public static final long ONE_GB = 1024L * 1024 * 1024;
 
 	public static final BigInteger ONE_GB_BI = BigInteger.valueOf(ONE_GB);
+
+	public static final long ONE_TB = 1024L * 1024 * 1024 * 1024;
+
+	public static final BigInteger ONE_TB_BI = BigInteger.valueOf(ONE_TB);
 
 	public static String toGB(long size) {
 		return String.valueOf(BigInteger.valueOf(size).divide(ONE_GB_BI)) + " GB";
@@ -31,10 +39,32 @@ public final class ConvertUtils {
 			return String.valueOf(BigInteger.valueOf(size).divide(ONE_KB_BI)) + " KB";
 		} else if (size < ONE_GB) {
 			return String.valueOf(BigInteger.valueOf(size).divide(ONE_MB_BI)) + " MB";
-			// } else if (size < FileUtils.ONE_TB_BI.longValue()) {
-			// return String.valueOf(BigInteger.valueOf(size).divide(FileUtils.ONE_GB_BI)) + " GB";
-		} else {
+		} else if (size < ONE_TB) {
 			return String.valueOf(BigInteger.valueOf(size).divide(ONE_GB_BI)) + " GB";
+		} else {
+			return String.valueOf(BigInteger.valueOf(size).divide(ONE_TB_BI)) + " TB";
+		}
+	}
+
+	public static Long fromHumanSize(String humanReadableSize) {
+		Matcher match = FIRST_INT_NUMBER_PATTERN.matcher(humanReadableSize);
+		if (!match.matches()) {
+			return null;
+		}
+		String numberStr = match.group(1);
+		String suffix = match.group(2);
+		long number = Integer.valueOf(numberStr);
+
+		if (suffix.endsWith("TB")) {
+			return number*1024*1024*1024*1024;
+		} else if (suffix.endsWith("GB")) {
+			return number*1024*1024*1024;
+		} else if (suffix.endsWith("MB")) {
+			return number*1024*1024;
+		} else if (suffix.endsWith("KB")) {
+			return number*1024;
+		} else {
+			return number;
 		}
 	}
 
