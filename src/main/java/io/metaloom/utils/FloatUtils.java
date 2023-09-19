@@ -22,4 +22,12 @@ public final class FloatUtils {
 		}
 		return ret;
 	}
+
+	public static Float[] floatToFloat(float[] vector) {
+		Float[] array = new Float[vector.length];
+		for (int i = 0; i < vector.length; i++) {
+			array[i] = vector[i];
+		}
+		return array;
+	}
 }

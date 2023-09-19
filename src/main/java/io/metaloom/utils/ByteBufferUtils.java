@@ -2,6 +2,7 @@ package io.metaloom.utils;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 public final class ByteBufferUtils {
 
@@ -15,17 +16,28 @@ public final class ByteBufferUtils {
 	 * @return
 	 */
 	public static ByteBuffer convertToByteBuffer(Object value) {
-		ByteBuffer buffer = switch (value) {
-		case ByteBuffer bb -> bb;
-		case Boolean b -> ByteBuffer.allocate(Integer.BYTES).putInt(b ? 1 : 0);
-		case Character c -> ByteBuffer.allocate(Character.BYTES).putChar(c);
-		case Integer i -> ByteBuffer.allocate(Integer.BYTES).putInt(i);
-		case Long l -> ByteBuffer.allocate(Long.BYTES).putLong(l);
-		case Double d -> ByteBuffer.allocate(Double.BYTES).putDouble(d);
-		case Float f -> ByteBuffer.allocate(Float.BYTES).putFloat(f);
-		case String s -> ByteBuffer.wrap(s.getBytes());
-		default -> Charset.defaultCharset().encode(value.toString());
-		};
+		Objects.requireNonNull(value);
+		// TODO use pattern matching here when JDK 21 support ships for eclipse
+		ByteBuffer buffer = null;
+		if (value instanceof ByteBuffer bb) {
+			buffer = bb;
+		} else if (value instanceof Boolean b) {
+			buffer = ByteBuffer.allocate(Integer.BYTES).putInt(b ? 1 : 0);
+		} else if (value instanceof Character c) {
+			buffer = ByteBuffer.allocate(Character.BYTES).putChar(c);
+		} else if (value instanceof Integer i) {
+			buffer = ByteBuffer.allocate(Integer.BYTES).putInt(i);
+		} else if (value instanceof Long l) {
+			buffer = ByteBuffer.allocate(Long.BYTES).putLong(l);
+		} else if (value instanceof Double d) {
+			buffer = ByteBuffer.allocate(Double.BYTES).putDouble(d);
+		} else if (value instanceof Float f) {
+			buffer = ByteBuffer.allocate(Float.BYTES).putFloat(f);
+		} else if (value instanceof String s) {
+			buffer = ByteBuffer.wrap(s.getBytes());
+		} else {
+			buffer = Charset.defaultCharset().encode(value.toString());
+		}
 		buffer.position(0);
 		return buffer;
 	}

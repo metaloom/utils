@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  */
 public final class UUIDUtils {
 
-	private static Pattern p = Pattern.compile("^[A-Fa-f0-9]+$");
+	private static Pattern p = Pattern.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
 
 	public static UUID randomUUID() {
 		UUID uuid = UUID.randomUUID();
