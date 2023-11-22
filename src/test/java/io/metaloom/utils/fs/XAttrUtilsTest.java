@@ -1,15 +1,22 @@
 package io.metaloom.utils.fs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class XAttrUtilsTest {
+
+	private static final Random RANDOM = new Random();
 
 	@Test
 	public void testReadWrite() throws IOException {
@@ -18,6 +25,24 @@ public class XAttrUtilsTest {
 		assertDataValue(42.42d, Double.class);
 		assertDataValue("hello world", String.class);
 		assertDataValue(true, Boolean.class);
+	}
+
+	@Test
+	@Disabled
+	public void testLargeXattr() throws IOException {
+		final String key = "test";
+		Path testFile = File.createTempFile("test", "large-xattr").toPath();
+		byte[] data = randomBytes(1024 * 1024); // 4096
+		XAttrUtils.clearXAttr(testFile);
+		XAttrUtils.writeBinAttr(testFile, key, ByteBuffer.wrap(data));
+		byte[] readData = XAttrUtils.readBinAttr(testFile, key).array();
+		assertTrue(Arrays.equals(data, readData), "Both data arrays should have the same data");
+	}
+
+	private byte[] randomBytes(int chunkSize) {
+		byte[] data = new byte[chunkSize];
+		RANDOM.nextBytes(data);
+		return data;
 	}
 
 	private <T> void assertDataValue(T value, Class<T> clazzOfT) throws IOException {

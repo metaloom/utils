@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import io.metaloom.utils.ByteBufferUtils;
 
 public final class XAttrUtils {
-	
+
 	public static final Logger log = LoggerFactory.getLogger(XAttrUtils.class);
 
 	private XAttrUtils() {
@@ -31,6 +31,11 @@ public final class XAttrUtils {
 	}
 
 	public static <T> T readAttr(Path path, String key, Class<T> classOfT) {
+		ByteBuffer buffer = readBinAttr(path, key);
+		return ByteBufferUtils.convertFromByteBuffer(buffer, classOfT);
+	}
+
+	public static ByteBuffer readBinAttr(Path path, String key) {
 		try {
 			UserDefinedFileAttributeView userDefinedFAView = Files
 				.getFileAttributeView(path, UserDefinedFileAttributeView.class);
@@ -44,21 +49,25 @@ public final class XAttrUtils {
 			ByteBuffer buffer = ByteBuffer.allocate(size);
 			userDefinedFAView.read(key, buffer);
 			buffer.position(0);
-			return ByteBufferUtils.convertFromByteBuffer(buffer, classOfT);
+			return buffer;
 		} catch (Exception e) {
 			throw new RuntimeException("Could not read property " + key, e);
 		}
 	}
 
-	public static void writeAttr(Path path, String key, Object value) {
+	public static void writeBinAttr(Path path, String key, ByteBuffer buffer) {
 		try {
 			UserDefinedFileAttributeView userDefinedFAView = Files
 				.getFileAttributeView(path, UserDefinedFileAttributeView.class);
-			ByteBuffer buffer = ByteBufferUtils.convertToByteBuffer(value);
 			userDefinedFAView.write(key, buffer);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to write attr {" + key + "} to file {" + path + "}", e);
 		}
+	}
+
+	public static void writeAttr(Path path, String key, Object value) {
+		ByteBuffer buffer = ByteBufferUtils.convertToByteBuffer(value);
+		writeBinAttr(path, key, buffer);
 	}
 
 	public static List<String> listAttr(Path path) {
