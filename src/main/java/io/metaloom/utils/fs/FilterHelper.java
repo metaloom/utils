@@ -22,23 +22,12 @@ public final class FilterHelper {
 		return Arrays.asList("jpg", "jpeg", "bmp", "tga", "gif", "webp", "png", "raw", "arw");
 	}
 
+	public static List<String> getDocumentExtensions() {
+		return Arrays.asList("odt", "rtf", "doc", "docx", "txt", "pdf", "md", "adoc");
+	}
+
 	public static boolean isDirectory(Path path, LinkOption... options) {
 		return path.toFile().isDirectory();
-	}
-
-	public static boolean isVideo(String name, LinkOption... options) {
-		name = name.toLowerCase();
-		for (String ext : FilterHelper.getVideoExtensions()) {
-			if (name.endsWith("." + ext)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static boolean isVideo(Path path, LinkOption... options) {
-		String name = path.toFile().getName().trim().toLowerCase();
-		return isVideo(name, options);
 	}
 
 	public static boolean isAudio(String name, LinkOption... options) {
@@ -66,14 +55,36 @@ public final class FilterHelper {
 		return name.endsWith(".jpg") || name.endsWith("jpeg");
 	}
 
-	public static boolean isImage(String name, LinkOption... options) {
-		name = name.toLowerCase();
-		for (String ext : FilterHelper.getImageExtensions()) {
-			if (name.endsWith("." + ext)) {
+	public static boolean matchesExtension(String filename, List<String> extensions) {
+		filename = filename.toLowerCase();
+		for (String ext : extensions) {
+			if (filename.endsWith("." + ext)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public static boolean isVideo(String name, LinkOption... options) {
+		return matchesExtension(name, FilterHelper.getVideoExtensions());
+	}
+
+	public static boolean isVideo(Path path, LinkOption... options) {
+		String name = path.toFile().getName().trim().toLowerCase();
+		return isVideo(name, options);
+	}
+
+	public static boolean isImage(String name, LinkOption... options) {
+		return matchesExtension(name, FilterHelper.getImageExtensions());
+	}
+
+	public static boolean isDocument(String name, LinkOption... options) {
+		return matchesExtension(name, FilterHelper.getDocumentExtensions());
+	}
+
+	public static boolean isDocument(Path path, LinkOption... options) {
+		String name = path.toFile().getName().trim().toLowerCase();
+		return isDocument(name, options);
 	}
 
 	public static boolean isImage(Path path, LinkOption... options) {

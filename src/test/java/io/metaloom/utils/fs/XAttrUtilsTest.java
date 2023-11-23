@@ -1,6 +1,7 @@
 package io.metaloom.utils.fs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -37,6 +38,13 @@ public class XAttrUtilsTest {
 		XAttrUtils.writeBinAttr(testFile, key, ByteBuffer.wrap(data));
 		byte[] readData = XAttrUtils.readBinAttr(testFile, key).array();
 		assertTrue(Arrays.equals(data, readData), "Both data arrays should have the same data");
+	}
+
+	@Test
+	public void testMissingXattr() throws IOException {
+		Path testFile = File.createTempFile("test", "large-xattr").toPath();
+		assertNull(XAttrUtils.readBinAttr(testFile, "test"));
+		assertNull(XAttrUtils.readAttr(testFile, "test", String.class));
 	}
 
 	private byte[] randomBytes(int chunkSize) {

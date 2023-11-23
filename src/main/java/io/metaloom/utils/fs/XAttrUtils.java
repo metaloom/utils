@@ -32,6 +32,9 @@ public final class XAttrUtils {
 
 	public static <T> T readAttr(Path path, String key, Class<T> classOfT) {
 		ByteBuffer buffer = readBinAttr(path, key);
+		if (buffer == null) {
+			return null;
+		}
 		return ByteBufferUtils.convertFromByteBuffer(buffer, classOfT);
 	}
 
