@@ -30,15 +30,15 @@ public final class XAttrUtils {
 		}
 	}
 
-	public static <T> T readAttr(Path path, String key, Class<T> classOfT) {
-		ByteBuffer buffer = readBinAttr(path, key);
+	public static <T> T readXAttr(Path path, String key, Class<T> classOfT) {
+		ByteBuffer buffer = readBinXAttr(path, key);
 		if (buffer == null) {
 			return null;
 		}
 		return ByteBufferUtils.convertFromByteBuffer(buffer, classOfT);
 	}
 
-	public static ByteBuffer readBinAttr(Path path, String key) {
+	public static ByteBuffer readBinXAttr(Path path, String key) {
 		try {
 			UserDefinedFileAttributeView userDefinedFAView = Files
 				.getFileAttributeView(path, UserDefinedFileAttributeView.class);
@@ -58,7 +58,7 @@ public final class XAttrUtils {
 		}
 	}
 
-	public static void writeBinAttr(Path path, String key, ByteBuffer buffer) {
+	public static void writeBinXAttr(Path path, String key, ByteBuffer buffer) {
 		try {
 			UserDefinedFileAttributeView userDefinedFAView = Files
 				.getFileAttributeView(path, UserDefinedFileAttributeView.class);
@@ -68,9 +68,13 @@ public final class XAttrUtils {
 		}
 	}
 
-	public static void writeAttr(Path path, String key, Object value) {
+	public static void writeXAttr(Path path, String key, Object value) {
 		ByteBuffer buffer = ByteBufferUtils.convertToByteBuffer(value);
-		writeBinAttr(path, key, buffer);
+		writeBinXAttr(path, key, buffer);
+	}
+
+	public static boolean hasXAttr(Path path, String key) {
+		return listAttr(path).contains(key);
 	}
 
 	public static List<String> listAttr(Path path) {

@@ -1,6 +1,7 @@
 package io.metaloom.utils.fs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,16 +36,24 @@ public class XAttrUtilsTest {
 		Path testFile = File.createTempFile("test", "large-xattr").toPath();
 		byte[] data = randomBytes(1024 * 1024); // 4096
 		XAttrUtils.clearXAttr(testFile);
-		XAttrUtils.writeBinAttr(testFile, key, ByteBuffer.wrap(data));
-		byte[] readData = XAttrUtils.readBinAttr(testFile, key).array();
+		XAttrUtils.writeBinXAttr(testFile, key, ByteBuffer.wrap(data));
+		byte[] readData = XAttrUtils.readBinXAttr(testFile, key).array();
 		assertTrue(Arrays.equals(data, readData), "Both data arrays should have the same data");
 	}
 
 	@Test
 	public void testMissingXattr() throws IOException {
 		Path testFile = File.createTempFile("test", "large-xattr").toPath();
-		assertNull(XAttrUtils.readBinAttr(testFile, "test"));
-		assertNull(XAttrUtils.readAttr(testFile, "test", String.class));
+		assertNull(XAttrUtils.readBinXAttr(testFile, "test"));
+		assertNull(XAttrUtils.readXAttr(testFile, "test", String.class));
+	}
+
+	@Test
+	public void testHasXattr() throws IOException {
+		Path testFile = File.createTempFile("test", "large-xattr").toPath();
+		assertFalse(XAttrUtils.hasXAttr(testFile, "blub"));
+		XAttrUtils.writeXAttr(testFile, "blub", "hello");
+		assertTrue(XAttrUtils.hasXAttr(testFile, "blub"));
 	}
 
 	private byte[] randomBytes(int chunkSize) {
@@ -57,12 +66,12 @@ public class XAttrUtilsTest {
 		String key = "abc_" + System.currentTimeMillis();
 		Path testFile = File.createTempFile("test", "xattr").toPath();
 		XAttrUtils.clearXAttr(testFile);
-		XAttrUtils.writeAttr(testFile, key, value);
+		XAttrUtils.writeXAttr(testFile, key, value);
 		List<String> attrs = XAttrUtils.listAttr(testFile);
 		assertEquals(1, attrs.size(), "The list should only contain one attr");
 		String readKey = attrs.get(0);
 		assertEquals(key, readKey, "The attribute key did not match");
-		T result = XAttrUtils.readAttr(testFile, key, clazzOfT);
+		T result = XAttrUtils.readXAttr(testFile, key, clazzOfT);
 		assertEquals(value, result, "The read back value was not correct");
 	}
 }
