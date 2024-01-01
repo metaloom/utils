@@ -16,7 +16,7 @@ public final class ByteBufferUtils {
 	 * @return
 	 */
 	public static ByteBuffer convertToByteBuffer(Object value) {
-		Objects.requireNonNull(value);
+		Objects.requireNonNull(value, "The object was null and can't be converted to a buffer");
 		// TODO use pattern matching here when JDK 21 support ships for eclipse
 		ByteBuffer buffer = null;
 		if (value instanceof ByteBuffer bb) {
@@ -66,7 +66,7 @@ public final class ByteBufferUtils {
 		} else if (classOfT.isAssignableFrom(Boolean.class)) {
 			return classOfT.cast(Boolean.valueOf(buffer.getInt() == 0 ? false : true));
 		} else {
-			throw new RuntimeException("Invalid type");
+			throw new RuntimeException("Invalid type: " + classOfT);
 		}
 	}
 
