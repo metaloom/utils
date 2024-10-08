@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,6 +98,19 @@ public final class FileUtils {
 				}
 			}
 			throw new RuntimeException("Unable to find new destination file for " + file.getAbsolutePath());
+		}
+	}
+
+	/**
+	 * Create the parent folder structure for the given file path.
+	 * 
+	 * @param filePath
+	 * @throws IOException
+	 */
+	public static void ensureParentFolder(Path filePath) throws IOException {
+		Path folderPath = filePath.getParent();
+		if (!Files.exists(folderPath)) {
+			Files.createDirectories(folderPath);
 		}
 	}
 
