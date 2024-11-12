@@ -1,10 +1,31 @@
 package io.metaloom.utils;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public final class FloatUtils {
 
 	private FloatUtils() {
+	}
+
+	public static List<Float> toList(float[] input) {
+		List<Float> list = new ArrayList<>();
+		for (int i = 0; i < input.length; i++) {
+			float f = input[i];
+			list.add(f);
+		}
+		return list;
+	}
+
+	public static float[] toArray(List<Float> input) {
+		Objects.requireNonNull(input);
+		float[] array = new float[input.size()];
+		for (int i = 0; i < input.size(); i++) {
+			array[i] = input.get(i);
+		}
+		return array;
 	}
 
 	public static byte[] floatToByte(float[] input) {
