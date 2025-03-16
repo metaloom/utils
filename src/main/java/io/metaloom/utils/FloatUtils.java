@@ -19,6 +19,14 @@ public final class FloatUtils {
 		return list;
 	}
 
+	public static double[] toDouble(float[] input) {
+		double[] output = new double[input.length];
+		for (int i = 0; i < input.length; i++) {
+			output[i] = input[i];
+		}
+		return output;
+	}
+
 	public static float[] toArray(List<Float> input) {
 		Objects.requireNonNull(input);
 		float[] array = new float[input.size()];
