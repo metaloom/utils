@@ -2,11 +2,35 @@ package io.metaloom.utils;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Objects;
 
 public final class ByteBufferUtils {
 
 	private ByteBufferUtils() {
+	}
+
+	public static ByteBuffer convertToOne(List<ByteBuffer> src) {
+		return convertToOne(src.toArray(new ByteBuffer[src.size()]));
+	}
+
+	public static ByteBuffer convertToOne(ByteBuffer... src) {
+		// Calculate the accumulated size
+		int totalSize = 0;
+		for (ByteBuffer b : src) {
+			totalSize += b.remaining();
+		}
+		ByteBuffer result = ByteBuffer.allocate(totalSize);
+
+		for (ByteBuffer b : src) {
+			// avoid modifying original buffer
+			ByteBuffer duplicate = b.duplicate();
+			result.put(duplicate);
+		}
+		// prepare for reading
+		result.flip();
+
+		return result;
 	}
 
 	/**
