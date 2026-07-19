@@ -11,7 +11,8 @@ public final class FilterHelper {
 	}
 
 	public static List<String> getVideoExtensions() {
-		return Arrays.asList("avi", "mp4", "mpg", "mpeg", "mkv", "wmv", "qt", "mov", "flv", "vob", "m2ts", "mts", "ts", "f4v", "rm", "m4v", "vid");
+		return Arrays.asList("avi", "mp4", "mpg", "mpeg", "mkv", "wmv", "qt", "mov", "flv", "vob", "m2ts", "mts", "ts", "f4v", "rm", "m4v", "vid",
+			"webm");
 	}
 
 	public static List<String> getAudioExtensions() {
